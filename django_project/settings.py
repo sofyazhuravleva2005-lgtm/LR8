@@ -128,3 +128,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Настройки для корректной работы за обратным прокси (Replit)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Отключаем принудительный редирект, чтобы избежать циклической переадресации в Replit
+SECURE_SSL_REDIRECT = False
+
+# Передаём сессионные cookie и CSRF-токены только по HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
