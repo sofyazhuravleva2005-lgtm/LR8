@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # 1. Ваше Django-приложение (сервер обработки данных)
+  app:
+    build: .
+    container_name: dos_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - MAX_REQUEST_PER_MIN=200
+      - MAX_CONCURRENT_CONNECTIONS=1000
+    networks:
+      - dos_network
+
+  # 2. Веб-сервер nginx
+  nginx:
+    image: nginx:latest
+    container_name: dos_nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - dos_network
+
+  # 3. База данных PostgreSQL
+  db:
+    image: postgres:15
+    container_name: dos_db
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dos_network
+
+  # 4. Интерфейс администрирования БД pgAdmin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: dos_pgadmin
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - db
+    networks:
+      - dos_network
+
+networks:
+  dos_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
