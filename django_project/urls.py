@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from tasks import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", views.index),
+    path('dashboard/', views.index, name='dashboard'),
+    path('', RedirectView.as_view(url='/admin/', permanent=False)),
     path('metrics/', include('django_prometheus.urls')),
 ]
