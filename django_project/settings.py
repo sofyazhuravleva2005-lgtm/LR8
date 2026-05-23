@@ -31,12 +31,16 @@ if "REPLIT_DOMAINS" in os.environ:
     ALLOWED_HOSTS += os.environ["REPLIT_DOMAINS"].split(',')
 
 # CSRF_TRUSTED_ORIGINS
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost',
+    'http://localhost:5000',
+    'http://127.0.0.1',
+    'http://127.0.0.1:5000',
+]
 if "REPLIT_DOMAINS" in os.environ:
-    CSRF_TRUSTED_ORIGINS = [
-        "https://" + domain for domain in os.environ["REPLIT_DOMAINS"].split(',')
-    ]
-else:
-    CSRF_TRUSTED_ORIGINS = ['http://localhost', 'http://127.0.0.1']
+    for domain in os.environ["REPLIT_DOMAINS"].split(','):
+        CSRF_TRUSTED_ORIGINS.append("https://" + domain)
+        CSRF_TRUSTED_ORIGINS.append("http://" + domain)
 
 # Application definition
 
