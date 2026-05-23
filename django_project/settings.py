@@ -26,11 +26,9 @@ SECRET_KEY = 'django-insecure-4ju2n@$f9d0c=h)_g0lbb%k9&@rf(xa$d$g$&5ri$uf)*gev^4
 DEBUG = True
 
 # ALLOWED_HOSTS
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 if "REPLIT_DOMAINS" in os.environ:
-    ALLOWED_HOSTS = os.environ["REPLIT_DOMAINS"].split(',')
-else:
-    # Для Docker и локального запуска
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+    ALLOWED_HOSTS += os.environ["REPLIT_DOMAINS"].split(',')
 
 # CSRF_TRUSTED_ORIGINS
 if "REPLIT_DOMAINS" in os.environ:
